@@ -20,12 +20,6 @@ class TelaInicialActivity : DebugActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tela_inicial)
 
-//        val args = intent.extras
-//        val nome = args?.getString("nome_usuario")
-//        val numero = args?.getInt("numero")
-//
-//        Toast.makeText(this, "Usuário: $nome", Toast.LENGTH_LONG).show()
-
         setSupportActionBar(toolbar_view)
 
         supportActionBar?.title = "Estoque"
@@ -91,6 +85,8 @@ class TelaInicialActivity : DebugActivity() {
             loadItems()
         } else if (id == R.id.action_add) {
             startActivity(Intent(this, AdicionarActivity::class.java))
+        } else if (id == R.id.action_exit) {
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         return true

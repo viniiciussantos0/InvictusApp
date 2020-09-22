@@ -2,6 +2,7 @@ package br.com.invictus.app
 
 import android.R.array
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -64,6 +65,7 @@ class ProdutoActivity : DebugActivity() {
         return true
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item?.itemId
 
@@ -71,8 +73,10 @@ class ProdutoActivity : DebugActivity() {
             Toast.makeText(this, "Buscando...", Toast.LENGTH_LONG).show()
         } else if (id == R.id.action_atualizar) {
             Toast.makeText(this, "Atualizando...", Toast.LENGTH_LONG).show()
-        } else if (id == android.R.id.home) {
-            finish()
+        } else if (id == R.id.action_add) {
+            startActivity(Intent(this, AdicionarActivity::class.java))
+        } else if (id == R.id.action_exit) {
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         return true

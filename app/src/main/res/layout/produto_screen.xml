@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="12dp"
+        android:textFontWeight="700"
+        android:textSize="18dp"
         android:text="Código do produto:" />
 
     <TextView
@@ -31,6 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
+        android:textFontWeight="700"
+        android:textSize="18dp"
         android:text="Nome:" />
 
 
@@ -47,6 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
+        android:textFontWeight="700"
+        android:textSize="18dp"
         android:text="Quantidade:" />
 
 
@@ -63,6 +69,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
+        android:textFontWeight="700"
+        android:textSize="18dp"
         android:text="Preço:" />
 
 
