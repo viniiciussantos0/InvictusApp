@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Invictus App</string>
+    <string name="mensagem_inicial">Faça seu login</string>
+    <string name="action_buscar">Buscar</string>
+    <string name="action_atualizar">Atualizar</string>
+    <string name="action_config">Configurações</string>
+    <string name="action_exit">Sair</string>
+    <string name="action_adicionar">Adicionar</string>
+</resources>
