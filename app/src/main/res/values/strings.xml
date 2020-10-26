@@ -6,4 +6,6 @@
     <string name="action_config">Configurações</string>
     <string name="action_exit">Sair</string>
     <string name="action_adicionar">Adicionar</string>
+    <string name="navigation_drawer_open">Fechar</string>
+    <string name="navigation_drawer_close">Abrir</string>
 </resources>
