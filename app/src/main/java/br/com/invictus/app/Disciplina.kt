@@ -1,8 +1,9 @@
 package br.com.invictus.app
 
 import android.content.Context
+import java.io.Serializable
 
-class Disciplina {
+class Disciplina : Serializable {
 
     var id:Long = 0
     var nome = ""

@@ -14,6 +14,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <!-- Colocar cardview com as disciplinas-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerDisciplinas"
