@@ -20,65 +20,39 @@ import kotlin.collections.HashMap
 
 class ProdutoActivity : DebugActivity() {
 
+
+    var produto: Produto? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.produto_screen)
 
-        val args = intent.extras
-        val prod = args?.getInt("item_produto")
+        // recuperar objeto de Disciplina da Intent
+        produto = intent.getSerializableExtra("produto") as Produto
 
-        val items: Array<Any> = getItems()
-        val produto: LinkedTreeMap<Any, Any> = items[prod!!] as LinkedTreeMap<Any, Any>
-
+        // configurar título com nome da Disciplina e botão de voltar da Toolbar
+        // colocar Toolbar
         setSupportActionBar(toolbar_view)
 
-        supportActionBar?.title = "Produto"
+        // alterar título da ActionBar
+        supportActionBar?.title = produto?.nome
+
+        // up navigation
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val codigoTexto: TextView = findViewById(R.id.codigoTexto) as TextView
-        codigoTexto.setText(produto["codigo_produto"].toString())
+        val codigoTexto: TextView = findViewById<TextView>(R.id.codigoTexto)
+        codigoTexto.setText(produto?.codigo?.toString())
 
-        val textView3Texto: TextView = findViewById(R.id.textView3Texto) as TextView
-        textView3Texto.setText(produto["nome"].toString())
+        val textView3Texto: TextView = findViewById<TextView>(R.id.textView3Texto)
+        textView3Texto.setText(produto?.nome)
 
-        val quantidadeTexto: TextView = findViewById(R.id.quantidadeTexto) as TextView
-        quantidadeTexto.setText(produto["quantidade"].toString())
+        val quantidadeTexto: TextView = findViewById<TextView>(R.id.quantidadeTexto)
+        quantidadeTexto.setText(produto?.qtd?.toString())
 
-        val precoTexto: TextView = findViewById(R.id.precoTexto) as TextView
-        precoTexto.setText(produto["preco"].toString())
+        val precoTexto: TextView = findViewById<TextView>(R.id.precoTexto)
+        val preco = produto?.preco?.toDouble()?.div(100);
 
+        precoTexto.setText(preco.toString())
     }
 
-    fun getItems(): Array<Any> {
-        val sharedPref = getSharedPreferences("PRODUTOS", Context.MODE_PRIVATE)
-        val gson = Gson()
-        val arrayType = object : TypeToken<Array<Any>>() {}.type
-
-        val items: Array<Any> =
-            gson.fromJson(sharedPref.getString("produtos", "[]"), arrayType)
-
-        return items
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item?.itemId
-
-        if (id == R.id.action_buscar) {
-            Toast.makeText(this, "Buscando...", Toast.LENGTH_LONG).show()
-        } else if (id == R.id.action_atualizar) {
-            Toast.makeText(this, "Atualizando...", Toast.LENGTH_LONG).show()
-        } else if (id == R.id.action_add) {
-            startActivity(Intent(this, AdicionarActivity::class.java))
-        } else if (id == R.id.action_exit) {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-
-        return true
-    }
 }

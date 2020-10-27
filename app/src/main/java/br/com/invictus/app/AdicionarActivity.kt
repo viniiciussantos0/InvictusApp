@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.activity_tela_inicial.*
 import kotlinx.android.synthetic.main.adicionar_screen.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
@@ -41,30 +42,15 @@ class AdicionarActivity : DebugActivity() {
         val quantidade = campoQuantidade.text.toString()
         val preco = campoPreco.text.toString()
 
-        val hashMap: HashMap<String, String> = HashMap<String, String>();
-        hashMap["codigo_produto"] = cod
-        hashMap["nome"] = nome
-        hashMap["quantidade"] = quantidade
-        hashMap["preco"] = preco
+        val produto: Produto = Produto();
+        produto.nome = nome
+        produto.qtd = quantidade
+        produto.preco = preco
+        produto.codigo = cod.toInt()
 
-        val sharedPref = getSharedPreferences("PRODUTOS", Context.MODE_PRIVATE) ?: return
-        val gson = Gson()
-        val arrayType = object : TypeToken<Array<Any>>() {}.type
-
-        val mutableItems: MutableList<Any> = mutableListOf<Any>()
-
-        val items: Array<Any> =
-            gson.fromJson(sharedPref.getString("produtos", "[]"), arrayType)
-        items.forEachIndexed  { idx, tut -> mutableItems.add(tut) }
-        mutableItems.add(hashMap);
-        mutableItems.forEachIndexed  { idx, tut -> println(tut) }
-
-        val json = Gson().toJson(mutableItems)
-
-        with(sharedPref.edit()) {
-            putString("produtos", json)
-            commit()
-        }
+        Thread {
+            ProdutosService.save(produto)
+        }.start()
 
         startActivity(Intent(this, TelaInicialActivity::class.java))
     }

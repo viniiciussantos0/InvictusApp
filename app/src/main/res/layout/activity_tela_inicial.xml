@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <!--Conteúdo da tela - omitido-->
-    <!--    <include layout="@layout/toolbar" />-->
+<!--    <include layout="@layout/toolbar" />-->
 
 
     <!--Conteúdo anterior já existente - omitido -->
