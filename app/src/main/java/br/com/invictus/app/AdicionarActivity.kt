@@ -4,6 +4,7 @@ import android.R.array
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -29,6 +30,7 @@ class AdicionarActivity : DebugActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         botaoAdicionar.setOnClickListener { onAddItem() }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -36,7 +38,20 @@ class AdicionarActivity : DebugActivity() {
         return true
     }
 
+    fun getItems(): List<Produto> {
+        val sharedPref = getSharedPreferences("PRODUTOS", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val arrayType = object : TypeToken<List<Produto>>() {}.type
+
+        val items: List<Produto> =
+            gson.fromJson<List<Produto>>(sharedPref.getString("items", ""), arrayType)
+
+        return items
+    }
+
     fun onAddItem() {
+        val items = getItems().toMutableList()
+
         val cod = campoCodigo.text.toString()
         val nome = campoNome.text.toString()
         val quantidade = campoQuantidade.text.toString()
@@ -48,9 +63,23 @@ class AdicionarActivity : DebugActivity() {
         produto.preco = preco
         produto.codigo = cod.toInt()
 
-        Thread {
-            ProdutosService.save(produto)
-        }.start()
+        items.add(produto)
+
+
+        val listOfProdutos: List<Produto> = items.toList()
+
+        if (AndroidUtils.isInternetDisponivel(this)) {
+            Thread {
+                ProdutosService.save(produto)
+            }.start()
+        } else {
+            val sharedPref = getSharedPreferences("PRODUTOS", Context.MODE_PRIVATE)
+
+            with(sharedPref.edit()) {
+                putString("items", Gson().toJson(listOfProdutos))
+                commit()
+            }
+        }
 
         startActivity(Intent(this, TelaInicialActivity::class.java))
     }

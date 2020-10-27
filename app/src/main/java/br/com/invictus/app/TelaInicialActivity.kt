@@ -4,6 +4,7 @@ import ProdutosAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView.OnItemClickListener
@@ -21,6 +22,7 @@ import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_tela_inicial.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.*
 
 class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val context: Context get() = this
@@ -47,9 +49,37 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
         taskProdutos()
     }
 
+    fun getItems(): List<Produto> {
+        val sharedPref = getSharedPreferences("PRODUTOS", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val arrayType = object : TypeToken<List<Produto>>() {}.type
+
+        val items: List<Produto> =
+            gson.fromJson<List<Produto>>(sharedPref.getString("items", ""), arrayType)
+
+        Log.d("ITEMADKSDA", items.toString())
+
+        return items
+    }
+
+
     fun taskProdutos() {
         Thread {
-            this.produtos = ProdutosService.getProdutos(context)
+            if (AndroidUtils.isInternetDisponivel(context)) {
+                this.produtos = ProdutosService.getProdutos(context)
+                val sharedPref = getSharedPreferences("PRODUTOS", Context.MODE_PRIVATE)
+                val gson = Gson()
+                val json = gson.toJson(this.produtos)
+
+                with(sharedPref.edit()) {
+                    putString("items", json)
+                    commit()
+                }
+            } else {
+                this.produtos = getItems()
+            }
+
+
             runOnUiThread {
                 recyclerDisciplinas?.adapter =
                     ProdutosAdapter(produtos) { onClickProduto(it) }
@@ -93,9 +123,19 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
             R.id.nav_config -> {
                 Toast.makeText(this, "Clicou Config", Toast.LENGTH_SHORT).show()
             }
+
+            R.id.logout -> {
+                val sharedPref = getSharedPreferences("USER", Context.MODE_PRIVATE)
+
+                with(sharedPref.edit()) {
+                    putBoolean("isLogged", false)
+                    commit()
+                }
+
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
-        // fecha menu depois de tratar o evento
-//        layoutMenuLateral.closeDrawer(GravityCompat.START)
+
         return true
     }
 
@@ -105,7 +145,7 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item?.itemId
+        val id = item.itemId
 
         if (id == R.id.action_buscar) {
             Toast.makeText(this, "Buscando...", Toast.LENGTH_LONG).show()
