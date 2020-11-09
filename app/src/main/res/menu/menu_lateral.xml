@@ -5,19 +5,11 @@
             android:id="@+id/adicionar_menu"
             android:icon="@drawable/ic_adicionar_black"
             android:title="Adicionar itens" />
-        
+
         <item
-            android:id="@+id/nav_forum"
-            android:icon="@drawable/ic_forum_black"
-            android:title="Fórum" />
-        <item
-            android:id="@+id/nav_mensagens"
-            android:icon="@drawable/ic_chat_black"
-            android:title="Mensagens" />
-        <item
-            android:id="@+id/nav_config"
+            android:id="@+id/nav_location"
             android:icon="@drawable/ic_configuracoes_black"
-            android:title="Configurações" />
+            android:title="Localização" />
         <item
             android:id="@+id/logout"
             android:title="Sair" />

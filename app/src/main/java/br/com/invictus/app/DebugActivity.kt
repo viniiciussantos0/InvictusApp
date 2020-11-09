@@ -3,14 +3,17 @@ package br.com.invictus.app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.drawerlayout.widget.DrawerLayout
 
 open class DebugActivity : AppCompatActivity() {
-    private val TAG = "LMSApp"
+    private val TAG = "InvictusApp"
     private val className: String
         get() {
             val s = javaClass.name
             return s.substring(s.lastIndexOf("."))
         }
+
+    var generic_layout: DrawerLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

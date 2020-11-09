@@ -21,6 +21,7 @@ import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_tela_inicial.*
+import kotlinx.android.synthetic.main.navigation_menu.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
@@ -28,16 +29,17 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
     private val context: Context get() = this
     private var produtos = listOf<Produto>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tela_inicial)
-        configuraMenuLateral()
 
         setSupportActionBar(toolbar_view)
 
+        this.generic_layout = layoutMenuLateral
         supportActionBar?.title = "Estoque"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        configuraMenuLateral()
 
         recyclerDisciplinas?.layoutManager = LinearLayoutManager(context)
         recyclerDisciplinas?.itemAnimator = DefaultItemAnimator()
@@ -57,11 +59,22 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
         val items: List<Produto> =
             gson.fromJson<List<Produto>>(sharedPref.getString("items", ""), arrayType)
 
-        Log.d("ITEMADKSDA", items.toString())
-
         return items
     }
 
+    fun enviaNotificacao(produto: Produto) {
+// Intent para abrir tela quando clicar na notificação
+        val intent = Intent(this, ProdutoActivity::class.java)
+// parâmetros extras
+        intent.putExtra("produto", produto)
+// Disparar notificação
+        NotificationUtils.create(
+            1,
+            intent,
+            "Invictus App",
+            "Você tem nova atividade no ${produto.nome}"
+        )
+    }
 
     fun taskProdutos() {
         Thread {
@@ -83,6 +96,10 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
             runOnUiThread {
                 recyclerDisciplinas?.adapter =
                     ProdutosAdapter(produtos) { onClickProduto(it) }
+
+                if (this.produtos.isNotEmpty()) {
+                    enviaNotificacao(this.produtos[0]);
+                }
 
             }
         }.start()
@@ -113,15 +130,11 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
             R.id.adicionar_menu -> {
                 startActivity(Intent(this, AdicionarActivity::class.java))
             }
-            R.id.nav_mensagens -> {
-                Toast.makeText(this, "Clicou Mensagens", Toast.LENGTH_SHORT).show()
-            }
-            R.id.nav_forum -> {
-                Toast.makeText(this, "Clicou Forum", Toast.LENGTH_SHORT).show()
-            }
 
-            R.id.nav_config -> {
-                Toast.makeText(this, "Clicou Config", Toast.LENGTH_SHORT).show()
+            R.id.nav_location -> {
+                val intent = Intent(this, MapasActivity::class.java)
+                Toast.makeText(this, "Menu Localização", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
             }
 
             R.id.logout -> {
