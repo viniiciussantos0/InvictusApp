@@ -95,7 +95,10 @@ class AdicionarActivity : DebugActivity() {
             startActivity(Intent(this, AdicionarActivity::class.java))
         } else if (id == R.id.action_exit) {
             startActivity(Intent(this, MainActivity::class.java))
+        } else if (id == android.R.id.home) {
+            finish()
         }
+
 
         return true
     }
