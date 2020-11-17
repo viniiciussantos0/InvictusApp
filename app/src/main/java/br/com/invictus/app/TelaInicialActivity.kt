@@ -167,7 +167,8 @@ class TelaInicialActivity : DebugActivity(), NavigationView.OnNavigationItemSele
         if (id == R.id.action_buscar) {
             Toast.makeText(this, "Buscando...", Toast.LENGTH_LONG).show()
         } else if (id == R.id.action_atualizar) {
-            Toast.makeText(this, "Atualizando...", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Atualizando...", Toast.LENGTH_LONG).show();
+            taskProdutos()
         } else if (id == R.id.action_add) {
             startActivity(Intent(this, AdicionarActivity::class.java))
         } else if (id == R.id.action_exit) {

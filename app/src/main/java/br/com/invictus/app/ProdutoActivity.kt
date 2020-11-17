@@ -55,4 +55,14 @@ class ProdutoActivity : DebugActivity() {
         precoTexto.setText(preco.toString())
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item?.itemId
+
+        if (id == android.R.id.home) {
+            finish()
+        }
+
+
+        return true
+    }
 }
